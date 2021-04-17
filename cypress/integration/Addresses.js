@@ -1,3 +1,13 @@
+// -- Start: Address Utils --
+
+function goToAddresses() {
+  cy.visit('index.php?controller=addresses')
+}
+
+// -- End: Address Utils --
+
+// -- Start: Tests --
+
 describe('User addresses', () => {
 
     beforeEach(function () {
@@ -9,8 +19,11 @@ describe('User addresses', () => {
     })
 
     it('should allow user add address under her account', () => {
-      
+      goToAddresses()
+
     })
 
 
   })
+
+  // -- End: Tests --
