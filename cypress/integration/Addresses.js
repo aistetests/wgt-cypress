@@ -62,6 +62,10 @@ function verifyAddressDetails(address) {
   })
 }
 
+function getAddresses() {
+  return cy.get('h3.page-subheading')
+}
+
 // -- End: Address Utils --
 
 // -- Start: Tests --
@@ -79,14 +83,21 @@ describe('User addresses', () => {
     it('should allow user add address under her account', () => {
       goToAddresses()
 
+      getAddresses().then($addressesBefore => {
+        const initialCount = $addressesBefore.length
+
         const address = setAddressData()
         addAddress(address)
   
         verifyAddressListIsShown()
         verifyNewAddressIsInList(address.title)
         verifyAddressDetails(address)
-        // verify that address count got bigger than before
+        getAddresses().then($addressesAfter => {
+          expect($addressesAfter.length).to.be.greaterThan(initialCount)
+        })
       })
+    })
+
 
   })
 
