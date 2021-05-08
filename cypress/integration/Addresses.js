@@ -1,19 +1,24 @@
 // -- Start: Address Utils --
 
+var user
+
 function goToAddresses() {
   cy.visit('index.php?controller=addresses')
 }
 
-function addAddress(title) {
+function addAddress(address) {
   cy.get('a[title="Add an address"]').click()
+
   // leave default name and company values
-  cy.get('#address1').type('Gatvė X - 22')
-  cy.get('#city').type('Vilnius')
-  cy.get('#id_state').select('Florida')
-  cy.get('#postcode').type('22222')
-  cy.get('#phone_mobile').type('222222222')
+  // TODO: verify them
+  cy.get('#address1').type(address.addressLine1)
+  cy.get('#city').type(address.city)
+  cy.get('#id_state').select(address.state)
+  cy.get('#postcode').type(address.postCode)
+  cy.get('#phone_mobile').type(address.mobilePhone)
   cy.get('#alias').clear()
-  cy.get('#alias').type(title)
+  cy.get('#alias').type(address.title)
+
   cy.get('#submitAddress').click()
 }
 
@@ -25,6 +30,38 @@ function verifyNewAddressIsInList(title) {
   cy.contains('h3', title).should('be.visible')
 }
 
+function setAddressData() {
+  const address = {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    company: user.company,
+    addressLine1: "Gatvė X - 22",
+    city: "Vilnius",
+    state: "Florida",
+    postCode: "22222",
+    country: "United States",
+    mobilePhone: "222222222",
+    title: 'Address ' + new Date().toLocaleString()
+  }
+  return address
+}
+
+function verifyAddressDetails(address) {
+  cy.contains(address.title)
+  .parents('ul')
+  .within(() => {
+    cy.get('.address_name').eq(0).should('contain.text', address.firstName)
+    cy.get('.address_name').eq(1).should('contain.text', address.lastName)
+    cy.get('.address_company').should('contain.text', address.company)
+    cy.get('.address_address1').should('contain.text', address.addressLine1)
+    cy.get('li').eq(4).find('span').eq(0).should('contain.text', address.city)
+    cy.get('li').eq(4).find('span').eq(1).should('contain.text', address.state)
+    cy.get('li').eq(4).find('span').eq(2).should('contain.text', address.postCode)
+    cy.get('li').eq(5).find('span').should('contain.text', address.country)  
+    cy.get('.address_phone_mobile').should('contain.text', address.mobilePhone)  
+  })
+}
+
 // -- End: Address Utils --
 
 // -- Start: Tests --
@@ -34,22 +71,22 @@ describe('User addresses', () => {
     beforeEach(function () {
       cy.visit('')
       cy.fixture('users.json').then((users) => {
-        const user = users[0]
+        user = users[0]
         cy.login(user.email, user.password)
       })
     })
 
     it('should allow user add address under her account', () => {
-      const addressTitle = 'Title ' + new Date().toLocaleString()
-
       goToAddresses()
-      addAddress(addressTitle)
-      verifyAddressListIsShown()
-      verifyNewAddressIsInList(addressTitle)
-      //verifyNewAddressDetails()
-      // verify that address count got bigger than before
-    })
 
+        const address = setAddressData()
+        addAddress(address)
+  
+        verifyAddressListIsShown()
+        verifyNewAddressIsInList(address.title)
+        verifyAddressDetails(address)
+        // verify that address count got bigger than before
+      })
 
   })
 

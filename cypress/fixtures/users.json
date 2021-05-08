@@ -1,6 +1,9 @@
 [
   {
     "email": "aiste@wgt.com",
-    "password": "WomenGoTech"
+    "password": "WomenGoTech",
+    "firstName": "Woman",
+    "lastName": "Go Tech",
+    "company": ""
   }
 ]
