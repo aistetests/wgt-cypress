@@ -110,12 +110,16 @@ function updateLastAddress(address) {
 
 describe('User addresses', () => {
 
-    beforeEach(function () {
+    before(function () {
       cy.visit('')
       cy.fixture('users.json').then((users) => {
         user = users[0]
         cy.login(user.email, user.password)
       })
+    })
+
+    beforeEach(function () {
+      cy.preserveAllCookiesOnce()
       goToAddresses()
     })
 
@@ -135,7 +139,7 @@ describe('User addresses', () => {
       })
     })
 
-    it.only('should allow user edit address under her account', () => {
+    it('should allow user edit address under her account', () => {
       cy.wrap(storeLastAddressDetails()).then($address => {
         $address.title = 'Updated ' + new Date().toLocaleString()
         $address.addressLine1 = 'Gatvė Y - ' + new Date().toLocaleString()
@@ -144,6 +148,10 @@ describe('User addresses', () => {
         updateLastAddress($address)
         verifyAddressDetails($address)
       })
+    })
+
+    after(function () {
+      cy.get('a.logout').click()
     })
 
   })

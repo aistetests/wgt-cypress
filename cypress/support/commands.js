@@ -11,3 +11,10 @@ Cypress.Commands.add('login', (username, password) => {
     cy.get('#passwd').type(password)
     cy.get('#SubmitLogin').click()
   })
+  
+  Cypress.Commands.add('preserveAllCookiesOnce', () => {
+    cy.getCookies().then(cookies => {
+      const namesOfCookies = cookies.map(c => c.name)
+      Cypress.Cookies.preserveOnce(...namesOfCookies)
+    })
+  })
