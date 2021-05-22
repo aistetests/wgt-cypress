@@ -10,8 +10,8 @@ describe('Automation Practice Login', () => {
     })
 
     it('allows log in with correct username and password', () => {
-      cy.get('#email').type('aiste@wgt.com')
-      cy.get('#passwd').type('WomenGoTech')
+      cy.get('#email').type('demo@automate.it')
+      cy.get('#passwd').type('Demo2021')
       cy.get('#SubmitLogin').click()
   
       cy.url().should('include', 'my-account')
