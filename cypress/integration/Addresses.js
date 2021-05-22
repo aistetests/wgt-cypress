@@ -135,8 +135,8 @@ describe('User addresses', () => {
         })
     })
 
-    it.only('should allow user edit address under her account', () => {
-        cy.wrap(storeLastAddressDetails()).then($address => {
+    it('should allow user edit address under her account', () => {
+          cy.wrap(storeLastAddressDetails()).then($address => {
             $address.title = 'Updated ' + new Date().toLocaleString()
             $address.addressLine1 = 'Gatvė Y - ' + new Date().toLocaleString()
             $address.postCode = Math.floor(Math.random() * 89999 + 10000)
@@ -145,8 +145,11 @@ describe('User addresses', () => {
             verifyAddressDetails($address)
         })
     })
-  
 
+    // Open Developer Tools -> Console
+    it.only('debugs addresses', () => {
+        cy.get('h3').debug()
+    })
 
 })
 
