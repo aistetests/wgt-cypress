@@ -60,6 +60,10 @@ function setAddressData() {
       cy.get('.address_phone_mobile').should('contain.text', address.mobilePhone)  
     })
   }
+
+  function getAddresses() {
+    return cy.get('h3.page-subheading')
+  }
   
 // -- End: Address Utils --
   
@@ -77,14 +81,19 @@ describe('User addresses', () => {
 
     it('should allow user add address under her account', () => {
         goToAddresses()
-
-        const address = setAddressData()
-        addAddress(address)
-
-        verifyAddressListIsShown()
-        verifyNewAddressIsInList(address.title)
-        verifyAddressDetails(address)
+        getAddresses().then($addressesBefore => {
+            const initialCount = $addressesBefore.length
+    
+            const address = setAddressData()
+            addAddress(address)
       
+            verifyAddressListIsShown()
+            verifyNewAddressIsInList(address.title)
+            verifyAddressDetails(address)
+            getAddresses().then($addressesAfter => {
+              expect($addressesAfter.length).to.be.greaterThan(initialCount)
+            })
+        })
     })
 
 
