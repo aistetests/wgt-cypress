@@ -110,14 +110,18 @@ function setAddressData() {
 
 describe('User addresses', () => {
 
-    beforeEach(function () {
+    before(function () {
         cy.visit('')
         cy.fixture('users.json').then((users) => {
           user = users[0]
           cy.login(user.email, user.password)
         })
+    })
+  
+    beforeEach(function () {
+        cy.preserveAllCookiesOnce()
         goToAddresses()
-    })  
+    }) 
 
     it('should allow user add address under her account', () => {
         getAddresses().then($addressesBefore => {
@@ -147,8 +151,12 @@ describe('User addresses', () => {
     })
 
     // Open Developer Tools -> Console
-    it.only('debugs addresses', () => {
+    it.skip('debugs addresses', () => {
         cy.get('h3').debug()
+    })
+
+    after(function () {
+        cy.get('a.logout').click()
     })
 
 })
