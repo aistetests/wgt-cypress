@@ -45,7 +45,21 @@ function setAddressData() {
     cy.contains('h3', title).should('be.visible')
   }
 
-
+  function verifyAddressDetails(address) {
+    cy.contains(address.title)
+    .parents('ul')
+    .within(() => {
+      cy.get('.address_name').eq(0).should('contain.text', address.firstName)
+      cy.get('.address_name').eq(1).should('contain.text', address.lastName)
+      cy.get('.address_company').should('contain.text', address.company)
+      cy.get('.address_address1').should('contain.text', address.addressLine1)
+      cy.get('li').eq(4).find('span').eq(0).should('contain.text', address.city)
+      cy.get('li').eq(4).find('span').eq(1).should('contain.text', address.state)
+      cy.get('li').eq(4).find('span').eq(2).should('contain.text', address.postCode)
+      cy.get('li').eq(5).find('span').should('contain.text', address.country)  
+      cy.get('.address_phone_mobile').should('contain.text', address.mobilePhone)  
+    })
+  }
   
 // -- End: Address Utils --
   
@@ -69,6 +83,7 @@ describe('User addresses', () => {
 
         verifyAddressListIsShown()
         verifyNewAddressIsInList(address.title)
+        verifyAddressDetails(address)
       
     })
 
