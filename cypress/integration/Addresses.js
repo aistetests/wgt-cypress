@@ -64,6 +64,26 @@ function setAddressData() {
   function getAddresses() {
     return cy.get('h3.page-subheading')
   }
+
+  function storeLastAddressDetails() {
+    var address = {}
+    cy.get('h3.page-subheading').last().parents('ul')
+    .within(() => {
+      cy.get('h3.page-subheading').then(($el) => { address.title = $el.text().trim() })
+      cy.get('.address_name').eq(0).then(($el) => { address.firstName = $el.text().trim() })
+      cy.get('.address_name').eq(1).then(($el) => { address.lastName = $el.text().trim() })
+      cy.get('.address_company').then(($el) => { address.company = $el.text().trim() })
+      cy.get('.address_address1').then(($el) => { address.addressLine1 = $el.text().trim() })
+      cy.get('.address_address2').then(($el) => { address.addressLine2 = $el.text().trim() })
+      cy.get('li').eq(4).find('span').eq(0).then(($el) => { address.city = $el.text().trim() })
+      cy.get('li').eq(4).find('span').eq(1).then(($el) => { address.state = $el.text().trim() })
+      cy.get('li').eq(4).find('span').eq(2).then(($el) => { address.postCode = $el.text().trim() })
+      cy.get('li').eq(5).find('span').then(($el) => { address.country = $el.text().trim() })
+      cy.get('.address_phone').then(($el) => { address.phone = $el.text().trim() })
+      cy.get('.address_phone_mobile').then(($el) => { address.mobilePhone = $el.text().trim() })
+    })
+    return address
+  }
   
 // -- End: Address Utils --
   
@@ -77,10 +97,10 @@ describe('User addresses', () => {
           user = users[0]
           cy.login(user.email, user.password)
         })
+        goToAddresses()
     })  
 
     it('should allow user add address under her account', () => {
-        goToAddresses()
         getAddresses().then($addressesBefore => {
             const initialCount = $addressesBefore.length
     
@@ -97,7 +117,12 @@ describe('User addresses', () => {
     })
 
     it.only('should allow user edit address under her account', () => {
-
+        cy.wrap(storeLastAddressDetails()).then($address => {
+            $address.title = 'Updated ' + new Date().toLocaleString()
+            $address.addressLine1 = 'Gatvė Y - ' + new Date().toLocaleString()
+            $address.postCode = Math.floor(Math.random() * 89999 + 10000)
+            
+        })
     })
   
 
