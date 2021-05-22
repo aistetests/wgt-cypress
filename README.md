@@ -1,5 +1,5 @@
-# UI test automation with Cypress
-This repository contains code for workshop **UI test automation with Cypress** in [Women Go Tech 2021](https://www.womengotech.lt/en/)
+# automateIT
+This repository contains code for workshop **UI test automation with Cypress** in [automateIT Automation Meetup vol. 3](https://www.automateit.pro/)
 
 ## How to use it
 
@@ -21,3 +21,6 @@ This repository contains code for workshop **UI test automation with Cypress** i
 Open the tests in your code editor to explore and modify them, running them in Cypress along the way.
 Have fun! 👩‍💻🥳
 
+## Slides
+
+[Slides of the workshop](https://docs.google.com/presentation/d/e/2PACX-1vTdBh3EbrJpXcmcY7Mu8TLMYZ-zsIMff4WcK91_nJcewbzOORj3_xtqIOpBPCh3O0Plf9SK53h3CQer/pub?start=false&loop=false&delayms=3000)
