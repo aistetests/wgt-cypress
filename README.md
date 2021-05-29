@@ -21,3 +21,6 @@ This repository contains code for workshop **UI test automation with Cypress** i
 Open the tests in your code editor to explore and modify them, running them in Cypress along the way.
 Have fun! 👩‍💻🥳
 
+Or, create your own project:
+`cd <directory_of_your_new_project>`
+`npx cypress open`
