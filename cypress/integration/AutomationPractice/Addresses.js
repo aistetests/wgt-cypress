@@ -83,7 +83,26 @@ function storeLastAddressDetails() {
       cy.get('.address_phone_mobile').then(($el) => { address.mobilePhone = $el.text().trim() })
     })
     return address
-  }
+}
+
+function updateLastAddress(address) {
+    cy.get('a[title=Update]').last().click()
+
+    cy.get('#firstname').clear().type(address.firstName)
+    cy.get('#lastname').clear().type(address.lastName)
+    cy.get('#company').clear().type(address.company)
+    cy.get('#address1').clear().type(address.addressLine1)
+    cy.get('#address2').clear().type(address.addressLine2)
+    cy.get('#city').clear().type(address.city)
+    cy.get('#id_state').select(address.state)
+    cy.get('#postcode').clear().type(address.postCode)
+    //country has only one and mandatory option, not possible to update
+    cy.get('#phone').clear().type(address.phone)
+    cy.get('#phone_mobile').clear().type(address.mobilePhone)
+    cy.get('#alias').clear().type(address.title)
+
+    cy.get('#submitAddress').click()
+}
 
 // -- End: Address Utils --
 
@@ -122,10 +141,9 @@ describe('User addresses', () => {
             $address.addressLine1 = 'Gatvė Y - ' + new Date().toLocaleString()
             $address.postCode = Math.floor(Math.random() * 89999 + 10000)
 
+            updateLastAddress($address)
+            verifyAddressDetails($address)
         })
-
-        
-
     })
 
 })
