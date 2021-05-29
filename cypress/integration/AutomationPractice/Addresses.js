@@ -20,9 +20,9 @@ function setAddressData() {
       title: 'Address ' + new Date().toLocaleString()
     }
     return address
-  }
+}
 
-  function addAddress(address) {
+function addAddress(address) {
     cy.get('a[title="Add an address"]').click()
 
     // leave default name and company values
@@ -35,15 +35,31 @@ function setAddressData() {
     cy.get('#alias').clear().type(address.title)
 
     cy.get('#submitAddress').click()
-  }
+}
 
-  function verifyAddressListIsShown() {
+function verifyAddressListIsShown() {
     cy.get('h1').should('have.text', 'My addresses')
-  }
+}
 
-  function verifyNewAddressIsInList(title) {
+function verifyNewAddressIsInList(title) {
     cy.contains('h3', title).should('be.visible')
-  }
+}
+
+function verifyAddressDetails(address) {
+    cy.contains(address.title)
+    .parents('ul')
+    .within(() => {
+      cy.get('.address_name').eq(0).should('contain.text', address.firstName)
+      cy.get('.address_name').eq(1).should('contain.text', address.lastName)
+      cy.get('.address_company').should('contain.text', address.company)
+      cy.get('.address_address1').should('contain.text', address.addressLine1)
+      cy.get('li').eq(4).find('span').eq(0).should('contain.text', address.city)
+      cy.get('li').eq(4).find('span').eq(1).should('contain.text', address.state)
+      cy.get('li').eq(4).find('span').eq(2).should('contain.text', address.postCode)
+      cy.get('li').eq(5).find('span').should('contain.text', address.country)  
+      cy.get('.address_phone_mobile').should('contain.text', address.mobilePhone)  
+    })
+}
 
 // -- End: Address Utils --
 
@@ -67,6 +83,7 @@ describe('User addresses', () => {
 
         verifyAddressListIsShown()
         verifyNewAddressIsInList(address.title)
+        verifyAddressDetails(address)
 
     })
 
