@@ -97,6 +97,10 @@ describe('User addresses', () => {
         })
     })
 
+    it.only('should allow user edit address under her account', () => {
+
+    })
+
 })
 
 // -- End: Tests --
