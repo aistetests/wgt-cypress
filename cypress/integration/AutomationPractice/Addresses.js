@@ -37,6 +37,14 @@ function setAddressData() {
     cy.get('#submitAddress').click()
   }
 
+  function verifyAddressListIsShown() {
+    cy.get('h1').should('have.text', 'My addresses')
+  }
+
+  function verifyNewAddressIsInList(title) {
+    cy.contains('h3', title).should('be.visible')
+  }
+
 // -- End: Address Utils --
 
 // -- Start: Tests --  
@@ -56,6 +64,9 @@ describe('User addresses', () => {
 
         const address = setAddressData()
         addAddress(address)
+
+        verifyAddressListIsShown()
+        verifyNewAddressIsInList(address.title)
 
     })
 
